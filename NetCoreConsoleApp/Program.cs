@@ -12,7 +12,9 @@ namespace NetCoreConsoleApp
             // 文字化け対策 http://kagasu.hatenablog.com/entry/2016/12/07/004813
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            XPath.Test();
+            XmlSerialize xmlSerialize = new XmlSerialize();
+            xmlSerialize.SerializeMySelf();
+            //XPath.Test();
         }
 
 
