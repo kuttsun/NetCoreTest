@@ -10,11 +10,14 @@ namespace NetCoreConsoleApp
         static void Main(string[] args)
         {
             // 文字化け対策 http://kagasu.hatenablog.com/entry/2016/12/07/004813
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+            //Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
 
-            XmlSerialize xmlSerialize = new XmlSerialize();
-            xmlSerialize.SerializeMySelf();
-            //XPath.Test();
+            //XmlSerialize xmlSerialize = new XmlSerialize();
+            //xmlSerialize.SerializeMySelf();
+            ////XPath.Test();
+            var Configuration = new Configuration();
+
+            Console.ReadKey();
         }
 
 
