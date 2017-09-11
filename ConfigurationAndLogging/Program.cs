@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using NLog.Extensions.Logging;
 
 namespace ConfigurationAndLogging
 {
@@ -42,6 +43,9 @@ namespace ConfigurationAndLogging
                 .AddConsole()
                 // Visual Studio のデバッグウィンドウに出力する
                 .AddDebug();
+            // NLogプロバイダーを追加することで、NLogの出力も行う
+            // ただし、プロジェクトに「NLog.config」を追加しておくこと（プロパティで「出力ディレクトリにコピー」を有効にする必要あり）
+            loggerFactory.AddProvider(new NLogLoggerProvider());
 
             // DI サービスコンテナに Singleton ライフサイクルにてオブジェクトを登録する
             // Singleton ライフサイクルでは Dependency インスタンスを一つ生成し、そのインスタンスをアプリケーションで共有する
@@ -72,7 +76,6 @@ namespace ConfigurationAndLogging
             // IConfigurationRoot から GetSection 及び GetChildren で個々の設定の取り出しができる
             // ここでは "MyOptions" セクションの内容を MyOptions として登録
             services.Configure<MyOptions>(configuration.GetSection("MyOptions"));
-
 
             // Application を DI サービスコンテナに登録する
             // AddTransient はインジェクション毎にインスタンスが生成される
@@ -119,6 +122,24 @@ namespace ConfigurationAndLogging
             {
                 logger.LogError(ex.ToString());
             }
+
+            // 他クラスにILoggerを渡してログ出力を試す
+            (new Beta(logger)).Execute();
+        }
+    }
+
+    public class Beta
+    {
+        ILogger logger;
+
+        public Beta(ILogger logger)
+        {
+            this.logger = logger;
+        }
+
+        public void Execute()
+        {
+            logger.LogCritical("test");
         }
     }
 }
