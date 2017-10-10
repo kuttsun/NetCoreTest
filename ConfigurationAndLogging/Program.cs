@@ -5,7 +5,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration;
 using System.IO;
+using System.Collections.Generic;
+
 using NLog.Extensions.Logging;
+
 
 namespace ConfigurationAndLogging
 {
@@ -86,7 +89,14 @@ namespace ConfigurationAndLogging
     // オプションを保持するためのクラス
     public class MyOptions
     {
+        public string Str { get; set; }
+        public List<Account> Accounts { get; set; }
+    }
+
+    public class Account
+    {
         public string Name { get; set; }
+        public string Password { get; set; }
     }
 
     public class Application
@@ -116,7 +126,11 @@ namespace ConfigurationAndLogging
 
             try
             {
-                logger.LogInformation($"This is a console application for {settings.Name}");
+                logger.LogInformation(settings.Str);
+                foreach(var account in settings.Accounts)
+                {
+                    logger.LogInformation($"Name:{account.Name}, Password:{account.Password}");
+                }
             }
             catch (Exception ex)
             {

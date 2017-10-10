@@ -15,6 +15,7 @@ namespace Hash
             var sha1 = GetHashString<SHA1CryptoServiceProvider>(text);
             var sha256 = GetHashString<SHA256CryptoServiceProvider>(text);
             var sha512 = GetHashString<SHA512CryptoServiceProvider>(text);
+            Console.WriteLine($"GetHashCode: {text.GetHashCode()}");
             Console.WriteLine($"MD5: {md5}");
             Console.WriteLine($"SHA1: {sha1}");
             Console.WriteLine($"SHA256: {sha256}");
