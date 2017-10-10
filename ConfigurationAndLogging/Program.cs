@@ -78,7 +78,9 @@ namespace ConfigurationAndLogging
             // Configure<T> を使ってオプションを初期化する
             // IConfigurationRoot から GetSection 及び GetChildren で個々の設定の取り出しができる
             // ここでは "MyOptions" セクションの内容を MyOptions として登録
-            services.Configure<MyOptions>(configuration.GetSection("MyOptions"));
+            services.Configure<MyOptions>(configuration.GetSection(nameof(MyOptions)));
+            services.Configure<Account>(configuration.GetSection($"{nameof(MyOptions)}:{nameof(Account)}"));
+            services.Configure<MyOptions2>(configuration.GetSection(nameof(MyOptions2)));
 
             // Application を DI サービスコンテナに登録する
             // AddTransient はインジェクション毎にインスタンスが生成される
@@ -90,28 +92,43 @@ namespace ConfigurationAndLogging
     public class MyOptions
     {
         public string Str { get; set; }
-        public List<Account> Accounts { get; set; }
+        public Account Account { get; set; }
     }
 
     public class Account
+    {
+        public List<User> Users { get; set; }
+    }
+
+    public class User
     {
         public string Name { get; set; }
         public string Password { get; set; }
     }
 
+    public class MyOptions2
+    {
+        public string Str { get; set; }
+    }
+
     public class Application
     {
         ILogger logger;
-        MyOptions settings;
+        readonly MyOptions settings;
+        readonly MyOptions2 settings2;
+        readonly Account account;
 
         // コンストラクタの引数として ILogger や IOptions 型の引数を定義すると、.NET Core の DI 機能によりオブジェクトが注入される
         // (コンストラクタインジェクション)
         // 設定を取得する際には IOptions<T> を経由して DI から値を受け取る
-        public Application(ILogger<Application> logger, IOptions<MyOptions> settings)
+        public Application(ILogger<Application> logger, IOptions<MyOptions> settings, IOptions<Account> account, IOptions<MyOptions2> settings2)
         {
             this.logger = logger;
             // ここで受け取れるオブジェクトは、オブジェクト自体ではなくアクセサオブジェクトであるため、Value プロパティを参照している
             this.settings = settings.Value;
+            //this.account = settings.Value.Account;
+            this.account = account.Value;
+            this.settings2 = settings2.Value;
         }
 
         public void Run()
@@ -127,10 +144,15 @@ namespace ConfigurationAndLogging
             try
             {
                 logger.LogInformation(settings.Str);
-                foreach(var account in settings.Accounts)
+                foreach (var account in settings.Account.Users)
                 {
                     logger.LogInformation($"Name:{account.Name}, Password:{account.Password}");
                 }
+                foreach (var account in account.Users)
+                {
+                    logger.LogInformation($"Name:{account.Name}, Password:{account.Password}");
+                }
+                logger.LogInformation(settings2.Str);
             }
             catch (Exception ex)
             {
