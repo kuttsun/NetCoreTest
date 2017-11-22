@@ -11,7 +11,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ConfigurationAndLogging", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hash", "Hash\Hash.csproj", "{CF8E6BF9-D8A9-443F-8F51-E31D4FAE5B7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandLine", "CommandLine\CommandLine.csproj", "{73AD5A44-407A-49D0-BD92-1FCCD761549E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommandLine", "CommandLine\CommandLine.csproj", "{73AD5A44-407A-49D0-BD92-1FCCD761549E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Json", "Json\Json.csproj", "{37DB3B30-9402-45CE-9D37-BBAE9471A090}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{73AD5A44-407A-49D0-BD92-1FCCD761549E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73AD5A44-407A-49D0-BD92-1FCCD761549E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73AD5A44-407A-49D0-BD92-1FCCD761549E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37DB3B30-9402-45CE-9D37-BBAE9471A090}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37DB3B30-9402-45CE-9D37-BBAE9471A090}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37DB3B30-9402-45CE-9D37-BBAE9471A090}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37DB3B30-9402-45CE-9D37-BBAE9471A090}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
