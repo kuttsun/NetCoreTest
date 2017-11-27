@@ -13,7 +13,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hash", "Hash\Hash.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommandLine", "CommandLine\CommandLine.csproj", "{73AD5A44-407A-49D0-BD92-1FCCD761549E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Json", "Json\Json.csproj", "{37DB3B30-9402-45CE-9D37-BBAE9471A090}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Json", "Json\Json.csproj", "{37DB3B30-9402-45CE-9D37-BBAE9471A090}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp1", "ConsoleApp1\ConsoleApp1.csproj", "{910F5AF0-FA98-4E82-BAF0-3CCAEEC9E7D1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleApp2", "ConsoleApp2\ConsoleApp2.csproj", "{2F062284-821C-49C4-AE4E-08917CE48974}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{37DB3B30-9402-45CE-9D37-BBAE9471A090}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{37DB3B30-9402-45CE-9D37-BBAE9471A090}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{37DB3B30-9402-45CE-9D37-BBAE9471A090}.Release|Any CPU.Build.0 = Release|Any CPU
+		{910F5AF0-FA98-4E82-BAF0-3CCAEEC9E7D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{910F5AF0-FA98-4E82-BAF0-3CCAEEC9E7D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{910F5AF0-FA98-4E82-BAF0-3CCAEEC9E7D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{910F5AF0-FA98-4E82-BAF0-3CCAEEC9E7D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F062284-821C-49C4-AE4E-08917CE48974}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F062284-821C-49C4-AE4E-08917CE48974}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F062284-821C-49C4-AE4E-08917CE48974}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F062284-821C-49C4-AE4E-08917CE48974}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
