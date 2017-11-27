@@ -16,9 +16,15 @@ namespace CommandLine
             // ヘルプ出力のトリガーとなるオプションを指定
             app.HelpOption("-?|-h|--help");
 
+            // オプションの設定
+            var commonOptions = app.Option("--common|-common",
+                "common オプション",
+                CommandOptionType.NoValue);
+
             app.OnExecute(() =>
             {
                 Console.WriteLine("Hello World!");
+                if (commonOptions.HasValue()) Console.WriteLine("共通オプションあり");
                 return 0;
             });
 
@@ -47,9 +53,15 @@ namespace CommandLine
                     {
                         Console.WriteLine("Hogeのオプション: " + value);
                     }
+
+                    // Command 内でオプションの定義をしていないので、これは必ず false になる
+                    // (Command の外で定義したオプションは Command 内では有効にならない)
+                    if (commonOptions.HasValue()) Console.WriteLine("common オプションあり");
                     return 0;
                 });
-            });
+            },
+            // 未定義のオプションがあった場合に例外とするかどうか
+            false);
 
             app.Execute(args);
 
