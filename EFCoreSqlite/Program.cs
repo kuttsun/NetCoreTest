@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace EFCoreSqlite
 {
@@ -6,20 +7,67 @@ namespace EFCoreSqlite
     {
         static void Main(string[] args)
         {
-            using (var db = new BloggingContext())
+            // データベースの作成
+            using (var db = new PersonDbContext())
             {
-                db.Blogs.Add(new Blog { Url = "http://blogs.msdn.com/adonet" });
-                var count = db.SaveChanges();
-                Console.WriteLine("{0} records saved to database", count);
+                db.Database.EnsureCreated();
+            }
 
-                Console.WriteLine();
-                Console.WriteLine("All blogs in database:");
-                foreach (var blog in db.Blogs)
+            Insert("Hoge");
+            Insert("Piyo");
+            Read();
+
+            Update(1, "Foo");
+            Read();
+
+            Delete(1);
+            Read();
+
+            Console.ReadKey();
+        }
+
+        // レコードの追加
+        static void Insert(string name)
+        {
+            using (var db = new PersonDbContext())
+            {
+                var person = new Person { Name = name };
+                db.Persons.Add(person);
+                db.SaveChanges();
+            }
+        }
+
+        // レコードの取得
+        static void Read()
+        {
+            using (var db = new PersonDbContext())
+            {
+                foreach (var person in db.Persons)
                 {
-                    Console.WriteLine(" - {0}", blog.Url);
+                    Console.WriteLine($"ID = {person.Id}, Name = {person.Name}");
                 }
+            }
+        }
 
-                Console.ReadKey();
+        // レコードの更新
+        static void Update(int id, string name)
+        {
+            using (var db = new PersonDbContext())
+            {
+                var person = db.Persons.Where(x => x.Id == id).FirstOrDefault();
+                person.Name = name;
+                db.SaveChanges();
+            }
+        }
+
+        // レコードの削除
+        static void Delete(int id)
+        {
+            using (var db = new PersonDbContext())
+            {
+                var person = db.Persons.Where(x => x.Id == id).FirstOrDefault();
+                db.Persons.Remove(person);
+                db.SaveChanges();
             }
         }
     }
