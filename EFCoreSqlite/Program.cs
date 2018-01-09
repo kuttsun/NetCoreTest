@@ -7,7 +7,8 @@ namespace EFCoreSqlite
     {
         static void Main(string[] args)
         {
-            PersonTest.Run();
+            //Model1Test.Run();
+            Model2Test.Run();
 
             Console.ReadKey();
         }

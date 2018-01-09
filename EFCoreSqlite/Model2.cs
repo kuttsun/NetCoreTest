@@ -1,33 +1,56 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
 
 namespace EFCoreSqlite
 {
-    public class PersonDbContext : DbContext
+    class MyContext : DbContext
     {
-        public DbSet<Person> Persons { get; set; }
+        public DbSet<Blog> Blogs { get; set; }
+        public DbSet<Post> Posts { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlite("Data Source=sqlitetest.db");
+            optionsBuilder.UseSqlite("Data Source=sqlitetest2.db");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Post>()
+                .HasOne(p => p.Blog)
+                .WithMany(b => b.Posts)
+                .HasForeignKey(p => p.BlogId)
+                .HasConstraintName("ForeignKey_Post_Blog");
         }
     }
 
-    public class Person
+    public class Blog
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        public int BlogId { get; set; }
+        public string Url { get; set; }
+
+        public List<Post> Posts { get; set; }
     }
 
-    class Model1Test
+    public class Post
+    {
+        public int PostId { get; set; }
+        public string Title { get; set; }
+        public string Content { get; set; }
+
+        public int BlogId { get; set; }
+        public Blog Blog { get; set; }
+    }
+
+    class Model2Test
     {
         public static void Run()
         {
             // データベースの作成
-            using (var db = new PersonDbContext())
+            using (var db = new MyContext())
             {
                 db.Database.EnsureCreated();
             }
