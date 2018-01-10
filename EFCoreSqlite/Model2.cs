@@ -46,59 +46,77 @@ namespace EFCoreSqlite
                 db.Database.EnsureCreated();
             }
 
-            Insert("Hoge");
-            Insert("Piyo");
-            Read();
 
-            Update(1, "Foo");
-            Read();
-
-            Delete(1);
-            Read();
+            //AddGraphOfNewEntities();
+            //AddRelatedEntity();
+            //ChangeRelationships();
+            RemoveRelationships();
         }
 
-        // レコードの追加
-        static void Insert(string name)
+        // 新規作成
+        static void AddGraphOfNewEntities()
         {
-            using (var db = new PersonDbContext())
+            using (var context = new MyContext())
             {
-                var person = new Person { Name = name };
-                db.Persons.Add(person);
-                db.SaveChanges();
-            }
-        }
-
-        // レコードの取得
-        static void Read()
-        {
-            using (var db = new PersonDbContext())
-            {
-                foreach (var person in db.Persons)
+                // Blogs テーブルに新規にレコードを追加し、その子として Posts に３つレコードを追加する
+                var blog = new Blog
                 {
-                    Console.WriteLine($"ID = {person.Id}, Name = {person.Name}");
-                }
+                    Url = "http://blogs.msdn.com/dotnet",
+                    Posts = new List<Post>
+                    {
+                        new Post { Title = "Intro to C#" },
+                        new Post { Title = "Intro to VB.NET" },
+                        new Post { Title = "Intro to F#" }
+                    }
+                };
+
+                context.Blogs.Add(blog);
+                context.SaveChanges();
             }
         }
 
-        // レコードの更新
-        static void Update(int id, string name)
+        // 関連するエンティティの追加
+        static void AddRelatedEntity()
         {
-            using (var db = new PersonDbContext())
+            using (var context = new MyContext())
             {
-                var person = db.Persons.Where(x => x.Id == id).FirstOrDefault();
-                person.Name = name;
-                db.SaveChanges();
+                // Blog テーブルの最初のレコードを取得し、
+                var blog = context.Blogs.Include(b => b.Posts).First();
+                // その子として Posts テーブルに新規にレコードを追加する
+                var post = new Post { Title = "Intro to EF Core" };
+
+                blog.Posts.Add(post);
+                context.SaveChanges();
             }
         }
 
-        // レコードの削除
-        static void Delete(int id)
+        // リレーションシップの変更
+        static void ChangeRelationships()
         {
-            using (var db = new PersonDbContext())
+            using (var context = new MyContext())
             {
-                var person = db.Persons.Where(x => x.Id == id).FirstOrDefault();
-                db.Persons.Remove(person);
-                db.SaveChanges();
+                // Blogs テーブルに新規にレコードを追加し、
+                var blog = new Blog { Url = "http://blogs.msdn.com/visualstudio" };
+                // Posts テーブルの最初のレコードの親を上記の Blogs に新規に追加するレコードに変更する
+                var post = context.Posts.First();
+
+                post.Blog = blog;
+                context.SaveChanges();
+            }
+        }
+
+        // リレーションシップの削除
+        static void RemoveRelationships()
+        {
+            using (var context = new MyContext())
+            {
+                // Blog テーブルの最初のレコードを取得し、
+                var blog = context.Blogs.Include(b => b.Posts).First();
+                // その子の Posts テーブルから関係する最初のレコードを削除する
+                var post = blog.Posts.First();
+
+                blog.Posts.Remove(post);
+                context.SaveChanges();
             }
         }
     }
