@@ -16,15 +16,6 @@ namespace EFCoreSqlite
         {
             optionsBuilder.UseSqlite("Data Source=sqlitetest2.db");
         }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Post>()
-                .HasOne(p => p.Blog)
-                .WithMany(b => b.Posts)
-                .HasForeignKey(p => p.BlogId)
-                .HasConstraintName("ForeignKey_Post_Blog");
-        }
     }
 
     public class Blog
@@ -82,7 +73,6 @@ namespace EFCoreSqlite
         {
             using (var db = new PersonDbContext())
             {
-                Console.WriteLine("----------");
                 foreach (var person in db.Persons)
                 {
                     Console.WriteLine($"ID = {person.Id}, Name = {person.Name}");

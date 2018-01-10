@@ -36,8 +36,12 @@ namespace EFCoreSqlite
             Insert("Piyo");
             Read();
 
+            Console.WriteLine("----------");
+
             Update(1, "Foo");
             Read();
+
+            Console.WriteLine("----------");
 
             Delete(1);
             Read();
