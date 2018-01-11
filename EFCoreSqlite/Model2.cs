@@ -7,7 +7,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EFCoreSqlite
 {
-    class MyContext : DbContext
+    class BloggingContext : DbContext
     {
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Post> Posts { get; set; }
@@ -41,7 +41,7 @@ namespace EFCoreSqlite
         public static void Run()
         {
             // データベースの作成
-            using (var db = new MyContext())
+            using (var db = new BloggingContext())
             {
                 db.Database.EnsureCreated();
             }
@@ -50,13 +50,14 @@ namespace EFCoreSqlite
             //AddGraphOfNewEntities();
             //AddRelatedEntity();
             //ChangeRelationships();
-            RemoveRelationships();
+            //RemoveRelationships();
+            LoadAllData();
         }
 
         // 新規作成
         static void AddGraphOfNewEntities()
         {
-            using (var context = new MyContext())
+            using (var context = new BloggingContext())
             {
                 // Blogs テーブルに新規にレコードを追加し、その子として Posts に３つレコードを追加する
                 var blog = new Blog
@@ -78,7 +79,7 @@ namespace EFCoreSqlite
         // 関連するエンティティの追加
         static void AddRelatedEntity()
         {
-            using (var context = new MyContext())
+            using (var context = new BloggingContext())
             {
                 // Blog テーブルの最初のレコードを取得し、
                 var blog = context.Blogs.Include(b => b.Posts).First();
@@ -93,7 +94,7 @@ namespace EFCoreSqlite
         // リレーションシップの変更
         static void ChangeRelationships()
         {
-            using (var context = new MyContext())
+            using (var context = new BloggingContext())
             {
                 // Blogs テーブルに新規にレコードを追加し、
                 var blog = new Blog { Url = "http://blogs.msdn.com/visualstudio" };
@@ -108,7 +109,7 @@ namespace EFCoreSqlite
         // リレーションシップの削除
         static void RemoveRelationships()
         {
-            using (var context = new MyContext())
+            using (var context = new BloggingContext())
             {
                 // Blog テーブルの最初のレコードを取得し、
                 var blog = context.Blogs.Include(b => b.Posts).First();
@@ -117,6 +118,22 @@ namespace EFCoreSqlite
 
                 blog.Posts.Remove(post);
                 context.SaveChanges();
+            }
+        }
+
+        static void LoadAllData()
+        {
+            using (var context = new BloggingContext())
+            {
+                var blogs = context.Blogs
+                    //.Include(blog => blog.Posts)
+                    .ToList();
+
+
+                foreach (var blog in blogs)
+                {
+                    Console.WriteLine($"BlogId = {blog.BlogId}, Posts = {blog.Posts.Count()}");
+                }
             }
         }
     }
