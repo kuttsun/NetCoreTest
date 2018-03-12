@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.IO;
+
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 using Microsoft.Extensions.Configuration;
-using System.IO;
-using System.Collections.Generic;
 
 using NLog.Extensions.Logging;
 
@@ -31,24 +31,29 @@ namespace ConfigurationAndLogging
             IServiceProvider serviceProvider = serviceCollection.BuildServiceProvider();
 
             // DI サービスコンテナから指定した型のサービスを取得する
-            var app = serviceProvider.GetService<Application>();
+            var app = serviceProvider.GetService<Sample>();
 
             // 実行
-            app.Run();
+            app.Start();
+
+            var loggerFactory = serviceProvider.GetService<ILoggerFactory>();
+            // 新しい ILogger インスタンスを作成（カテゴリ名 default）
+            var logger = loggerFactory.CreateLogger("Default");
+            logger.LogInformation("終了");
             Console.ReadKey();
         }
 
-        private static void ConfigureServices(IServiceCollection services)
+        static void ConfigureServices(IServiceCollection services)
         {
             // ロギングの設定
             ILoggerFactory loggerFactory = new LoggerFactory()
                 // コンソールに出力する
-                .AddConsole()
+                //.AddConsole()
                 // Visual Studio のデバッグウィンドウに出力する
-                .AddDebug();
-            // NLogプロバイダーを追加することで、NLogの出力も行う
-            // ただし、プロジェクトに「NLog.config」を追加しておくこと（プロパティで「出力ディレクトリにコピー」を有効にする必要あり）
-            loggerFactory.AddProvider(new NLogLoggerProvider());
+                .AddDebug()
+                // NLog を使用する
+                .AddNLog();
+            //loggerFactory.ConfigureNLog("NLog.Config");
 
             // DI サービスコンテナに Singleton ライフサイクルにてオブジェクトを登録する
             // Singleton ライフサイクルでは Dependency インスタンスを一つ生成し、そのインスタンスをアプリケーションで共有する
@@ -84,98 +89,7 @@ namespace ConfigurationAndLogging
 
             // Application を DI サービスコンテナに登録する
             // AddTransient はインジェクション毎にインスタンスが生成される
-            services.AddTransient<Application>();
-        }
-    }
-
-    // オプションを保持するためのクラス
-    public class MyOptions
-    {
-        public string Str { get; set; }
-        public Account Account { get; set; }
-    }
-
-    public class Account
-    {
-        public List<User> Users { get; set; }
-    }
-
-    public class User
-    {
-        public string Name { get; set; }
-        public string Password { get; set; }
-    }
-
-    public class MyOptions2
-    {
-        public string Str { get; set; }
-    }
-
-    public class Application
-    {
-        ILogger logger;
-        readonly MyOptions settings;
-        readonly MyOptions2 settings2;
-        readonly Account account;
-
-        // コンストラクタの引数として ILogger や IOptions 型の引数を定義すると、.NET Core の DI 機能によりオブジェクトが注入される
-        // (コンストラクタインジェクション)
-        // 設定を取得する際には IOptions<T> を経由して DI から値を受け取る
-        public Application(ILogger<Application> logger, IOptions<MyOptions> settings, IOptions<Account> account, IOptions<MyOptions2> settings2)
-        {
-            this.logger = logger;
-            // ここで受け取れるオブジェクトは、オブジェクト自体ではなくアクセサオブジェクトであるため、Value プロパティを参照している
-            this.settings = settings.Value;
-            //this.account = settings.Value.Account;
-            this.account = account.Value;
-            this.settings2 = settings2.Value;
-        }
-
-        public void Run()
-        {
-            logger.LogCritical("Log Critical");
-            logger.LogError("Log Error");
-            logger.LogWarning("Log Warning");
-            logger.LogInformation("Log Information");
-            // 以下の２つはデフォルトでは出力されない
-            logger.LogDebug("Log Debug");
-            logger.LogTrace("Log Trace");
-
-            try
-            {
-                logger.LogInformation(settings.Str);
-                foreach (var account in settings.Account.Users)
-                {
-                    logger.LogInformation($"Name:{account.Name}, Password:{account.Password}");
-                }
-                foreach (var account in account.Users)
-                {
-                    logger.LogInformation($"Name:{account.Name}, Password:{account.Password}");
-                }
-                logger.LogInformation(settings2.Str);
-            }
-            catch (Exception ex)
-            {
-                logger.LogError(ex.ToString());
-            }
-
-            // 他クラスにILoggerを渡してログ出力を試す
-            (new Beta(logger)).Execute();
-        }
-    }
-
-    public class Beta
-    {
-        ILogger logger;
-
-        public Beta(ILogger logger)
-        {
-            this.logger = logger;
-        }
-
-        public void Execute()
-        {
-            logger.LogCritical("test");
+            services.AddTransient<Sample>();
         }
     }
 }
