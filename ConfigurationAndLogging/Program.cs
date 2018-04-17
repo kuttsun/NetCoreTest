@@ -68,7 +68,7 @@ namespace ConfigurationAndLogging
                 .SetBasePath(Directory.GetCurrentDirectory())
                 // ここでどの設定元を使うか指定
                 // 同じキーが設定されている場合、後にAddしたものが優先される
-                .AddJsonFile($"appsettings.json", optional: true)
+                .AddJsonFile($"AppSettings.json", optional: true)
                 // ここでは JSON より環境変数を優先している
                 .AddEnvironmentVariables()
                 // 上記の設定を実際に適用して構成読み込み用のオブジェクトを得る
