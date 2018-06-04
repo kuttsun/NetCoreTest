@@ -10,6 +10,7 @@ namespace ConfigurationAndLogging
     public class Sample
     {
         ILogger logger;
+
         readonly MyOptions settings;
         readonly MyOptions2 settings2;
         readonly Account account;
@@ -19,8 +20,8 @@ namespace ConfigurationAndLogging
         // 設定を取得する際には IOptions<T> を経由して DI から値を受け取る
         public Sample(ILogger<Sample> logger, ILoggerFactory loggerFactory,IOptions<MyOptions> settings, IOptions<Account> account, IOptions<MyOptions2> settings2)
         {
-            this.logger = loggerFactory.CreateLogger("Custom");
-            //this.logger = logger;
+            //this.logger = loggerFactory.CreateLogger("Custom");
+            this.logger = logger;
             // ここで受け取れるオブジェクトは、オブジェクト自体ではなくアクセサオブジェクトであるため、Value プロパティを参照している
             this.settings = settings.Value;
             //this.account = settings.Value.Account;
