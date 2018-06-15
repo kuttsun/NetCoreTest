@@ -14,8 +14,10 @@ namespace Parse
     {
         static void Main(string[] args)
         {
-            Serialize();
+            // ファイルから読み込み
+            var person = PersonJson.ReadFile("test.json");
 
+            Serialize();
             Deserialize();
 
             Console.ReadKey();
@@ -25,7 +27,7 @@ namespace Parse
         {
             Console.WriteLine("シリアライズテスト");
 
-            var person = new Person
+            var person = new PersonJson
             {
                 Name = "hoge",
                 Age = 30,
@@ -50,21 +52,11 @@ namespace Parse
             }
             ";
 
-            var person = JsonConvert.DeserializeObject<Person>(json);
+            var person = JsonConvert.DeserializeObject<PersonJson>(json);
             Console.WriteLine(person.Name);
             Console.WriteLine(person.Age);
             Console.WriteLine(person.Gender);
             Console.WriteLine(person.Neet);
-        }
-
-        class Person
-        {
-            public string Name { get; set; }
-            public int Age { get; set; }
-            // enum を文字列で出力したい場合は StringEnumConverter を使用する
-            [JsonConverter(typeof(StringEnumConverter))]
-            public Gender Gender { get; set; } = Gender.Male;
-            public bool Neet { get; set; }
         }
     }
 }
