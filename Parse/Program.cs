@@ -48,7 +48,9 @@ namespace Parse
                 ""Name"": ""hoge"",
                 ""Age"": 30,
                 ""Gender"": ""Male"",
-                ""Neet"": true
+                ""Neet"": true,
+                ""Birthday"": ""12:23:45"",
+                ""Time"": ""01:23:45""
             }
             ";
 
@@ -57,6 +59,14 @@ namespace Parse
             Console.WriteLine(person.Age);
             Console.WriteLine(person.Gender);
             Console.WriteLine(person.Neet);
+            Console.WriteLine(person.Birthday);// 時刻情報しかない場合はその日の日付が入る
+            Console.WriteLine(person.Time);
+
+            // 時刻の部分だけを取得する
+            TimeSpan tsNow = person.Birthday.TimeOfDay;
+
+            // 取得した時刻を表示する
+            Console.WriteLine(tsNow.ToString());
         }
     }
 }

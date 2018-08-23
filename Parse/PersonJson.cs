@@ -15,6 +15,8 @@ namespace Parse
         [JsonConverter(typeof(StringEnumConverter))]
         public Gender Gender { get; set; } = Gender.Male;
         public bool Neet { get; set; }
+        public DateTime Birthday { get; set; }
+        public TimeSpan Time { get; set; }
 
         public void WriteFile(string path)
         {
