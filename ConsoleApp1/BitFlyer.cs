@@ -30,6 +30,7 @@ namespace ConsoleApp1
             {
                 GetProfitSpread(lot);
             }
+            GetProfitSpread(0.5);
             GetProfitSpread(1);
 
             Console.WriteLine();
@@ -48,6 +49,7 @@ namespace ConsoleApp1
             {
                 GetLossSpread(lot);
             }
+            GetProfitSpread(0.5);
             GetLossSpread(1);
         }
 
