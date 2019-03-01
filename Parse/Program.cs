@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -10,15 +11,61 @@ namespace Parse
         Female,
         Unknown
     }
+
+    enum Birthplace
+    {
+        Japan
+    }
     class Program
     {
         static void Main(string[] args)
         {
-            // ファイルから読み込み
-            var person = PersonJson.ReadFile("test.json");
 
-            Serialize();
-            Deserialize();
+            //var setting = new JsonSerializerSettings()
+            //{
+            //    // enum 全てを文字列でシリアライズしたい場合は Converters を設定する
+            //    Converters = new List<JsonConverter>(){
+            //        new StringEnumConverter()
+            //    },
+            //    // インデントあり
+            //    Formatting = Formatting.Indented
+            //};
+
+            JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            {
+                // enum 全てを文字列でシリアライズしたい場合は Converters を設定する
+                Converters = new List<JsonConverter>(){
+                    new StringEnumConverter()
+                },
+                // インデントあり
+                Formatting = Formatting.Indented
+            };
+
+            var json = JsonConvert.SerializeObject(
+                new Person
+                {
+                    Name = "hoge",
+                    Age = 30,
+                    Gender = Gender.Male,
+                    Birthplace = Birthplace.Japan
+                });
+            Console.WriteLine(json);
+
+            //var json = JsonConvert.SerializeObject(
+            //    new Person
+            //    {
+            //        Name = "hoge",
+            //        Age = 30,
+            //        Gender = Gender.Male,
+            //        Birthplace = Birthplace.Japan
+            //    },
+            //    Formatting.Indented);
+            //Console.WriteLine(json);
+
+            // ファイルから読み込み
+            //var person = PersonJson.ReadFile("test.json");
+            //Serialize();
+            //Deserialize();
 
             Console.ReadKey();
         }

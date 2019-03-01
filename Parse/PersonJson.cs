@@ -11,8 +11,8 @@ namespace Parse
     {
         public string Name { get; set; }
         public int Age { get; set; }
-        // enum を文字列で出力したい場合は StringEnumConverter を使用する
-        [JsonConverter(typeof(StringEnumConverter))]
+        //  特定の enum プロパティを文字列でシリアライズしたい場合は StringEnumConverter を使用する
+        //[JsonConverter(typeof(StringEnumConverter))]
         public Gender Gender { get; set; } = Gender.Male;
         public bool Neet { get; set; }
         public DateTime Birthday { get; set; }
