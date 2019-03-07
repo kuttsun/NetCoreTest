@@ -23,9 +23,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hardware", "Hardware\Hardwa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parse", "Parse\Parse.csproj", "{452FA009-B0CC-480B-AC5A-596A31C32386}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyInjection", "DependencyInjection\DependencyInjection.csproj", "{2669039C-76D9-4456-9827-1BFD0D58B39A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DependencyInjection", "DependencyInjection\DependencyInjection.csproj", "{2669039C-76D9-4456-9827-1BFD0D58B39A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyInjection2", "DependencyInjection2\DependencyInjection2.csproj", "{ED0B02B0-175C-48CC-BDC7-D2AAEBA56DE2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DependencyInjection2", "DependencyInjection2\DependencyInjection2.csproj", "{ED0B02B0-175C-48CC-BDC7-D2AAEBA56DE2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EFCoreSqlServer", "EFCoreSqlServer\EFCoreSqlServer.csproj", "{302ADD60-FBF1-4DDF-917A-C121AA8D53C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{ED0B02B0-175C-48CC-BDC7-D2AAEBA56DE2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED0B02B0-175C-48CC-BDC7-D2AAEBA56DE2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED0B02B0-175C-48CC-BDC7-D2AAEBA56DE2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{302ADD60-FBF1-4DDF-917A-C121AA8D53C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{302ADD60-FBF1-4DDF-917A-C121AA8D53C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{302ADD60-FBF1-4DDF-917A-C121AA8D53C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{302ADD60-FBF1-4DDF-917A-C121AA8D53C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
