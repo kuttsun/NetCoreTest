@@ -16,41 +16,49 @@ namespace ConsoleApp1
             //var minSpread = GetMinSpreadSub(lot, 1);
             //Console.WriteLine($"minSpread={minSpread}, Round={Math.Round((minSpread) * lot)}, Round+1={Math.Round((minSpread + 1) * lot)}");
 
-            // header
-            Console.Write($"lot |");
-            for (int benefit = 1; benefit <= 10; benefit++)
-            {
-                Console.Write($"{benefit,4}|");
-                //Console.WriteLine($"lot={lot:N2}, benefit={benefit,2}, minSpread={minSpread,4}");
-            }
-            Console.WriteLine();
-            Console.WriteLine($"----|----|----|----|----|----|----|----|----|----|----|");
-            // body
-            for (double lot = 0.01; lot <= 0.10; lot += 0.01)
-            {
-                GetProfitSpread(lot);
-            }
-            GetProfitSpread(0.5);
-            GetProfitSpread(1);
+            //// header
+            //Console.Write($"lot |");
+            //for (int benefit = 1; benefit <= 10; benefit++)
+            //{
+            //    Console.Write($"{benefit,4}|");
+            //    //Console.WriteLine($"lot={lot:N2}, benefit={benefit,2}, minSpread={minSpread,4}");
+            //}
+            //Console.WriteLine();
+            //Console.WriteLine($"----|----|----|----|----|----|----|----|----|----|----|");
+            //// body
+            //for (double lot = 0.01; lot <= 0.10; lot += 0.01)
+            //{
+            //    GetProfitSpread(lot);
+            //}
+            //GetProfitSpread(0.5);
+            //GetProfitSpread(1);
 
-            Console.WriteLine();
+            //Console.WriteLine();
 
-            // header
-            Console.Write($"lot |");
-            for (int benefit = 1; benefit <= 10; benefit++)
-            {
-                Console.Write($"{benefit,4}|");
-                //Console.WriteLine($"lot={lot:N2}, benefit={benefit,2}, minSpread={minSpread,4}");
-            }
-            Console.WriteLine();
-            Console.WriteLine($"----|----|----|----|----|----|----|----|----|----|----|");
-            // body
-            for (double lot = 0.01; lot <= 0.10; lot += 0.01)
-            {
-                GetLossSpread(lot);
-            }
-            GetProfitSpread(0.5);
-            GetLossSpread(1);
+            //// header
+            //Console.Write($"lot |");
+            //for (int benefit = 1; benefit <= 10; benefit++)
+            //{
+            //    Console.Write($"{benefit,4}|");
+            //    //Console.WriteLine($"lot={lot:N2}, benefit={benefit,2}, minSpread={minSpread,4}");
+            //}
+            //Console.WriteLine();
+            //Console.WriteLine($"----|----|----|----|----|----|----|----|----|----|----|");
+            //// body
+            //for (double lot = 0.01; lot <= 0.10; lot += 0.01)
+            //{
+            //    GetLossSpread(lot);
+            //}
+            //GetProfitSpread(0.5);
+            //GetLossSpread(1);
+
+
+            var lot = 0.02;
+            var price = 100;
+            var profit = GetMinPriceToObtainSameProfit(lot, price);
+            Console.WriteLine($"{profit}");
+            var loss = GetMaxPriceToObtainSameLoss(lot, price);
+            Console.WriteLine($"{loss}");
         }
 
         static void GetProfitSpread(double lot)
@@ -117,6 +125,40 @@ namespace ConsoleApp1
 
             // きちんと計算すれば上だが、別にこれでも良い
             return GetProfitMinSpread(lot, loss) - 1;
+        }
+
+        /// <summary>
+        /// ある金額で得られる利益と同じ利益が得られる最小の金額を取得
+        /// </summary>
+        /// <param name="lot"></param>
+        /// <param name="benefit"></param>
+        /// <returns></returns>
+        static int GetMinPriceToObtainSameProfit(double lot, int price)
+        {
+            for (int i = 1; ; i++)
+            {
+                if (price < GetProfitMinSpread(lot, i + 1))
+                {
+                    return GetProfitMinSpread(lot, i);
+                }
+            }
+        }
+
+        /// <summary>
+        /// ある金額で被る損失と同じ損失を被る最大の金額を取得
+        /// </summary>
+        /// <param name="lot"></param>
+        /// <param name="benefit"></param>
+        /// <returns></returns>
+        static int GetMaxPriceToObtainSameLoss(double lot, int price)
+        {
+            for (int i = 1; ; i++)
+            {
+                if (price < GetProfitMinSpread(lot, i + 1))
+                {
+                    return GetLossMaxSpread(lot, i + 1);
+                }
+            }
         }
 
         static int GetMinSpread(double lot, int benefit)
