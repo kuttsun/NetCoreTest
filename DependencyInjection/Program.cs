@@ -1,5 +1,7 @@
 ﻿using System;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.EntityFrameworkCore.InMemory;
+using Microsoft.EntityFrameworkCore;
 
 namespace DependencyInjection
 {
@@ -17,6 +19,13 @@ namespace DependencyInjection
             //services.AddSingleton<ConcreteClass1>();
             //services.AddSingleton<ConcreteClass2>();
             services.AddSingleton<DiClass1>();
+            services.AddDbContext<Context>(options =>
+            {
+                options.UseSqlite("DataSource=./hoge.db");
+                //options.UseInMemoryDatabase();
+
+            });
+            services.AddSingleton<Hoge>();
 
             // DI サービスのビルド
             IServiceProvider serviceProvider = services.BuildServiceProvider();
@@ -25,6 +34,10 @@ namespace DependencyInjection
             //serviceProvider.GetService<ConcreteClass2>();
             serviceProvider.GetService<DiClass1>();
             //serviceProvider.GetService<Class2>();
+
+            serviceProvider.GetService<Hoge>().Insert();
+            serviceProvider.GetService<Hoge>().Insert();
+            serviceProvider.GetService<Hoge>().Insert();
 
             Console.ReadKey();
         }
