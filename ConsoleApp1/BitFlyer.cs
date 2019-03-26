@@ -5,6 +5,26 @@ using System.Linq;
 
 namespace ConsoleApp1
 {
+    public enum BreakTime
+    {
+        /// <summary>
+        /// トレード休止時間中でない
+        /// </summary>
+        None,
+        /// <summary>
+        /// トレード休止時間直前
+        /// </summary>
+        Before,
+        /// <summary>
+        /// トレード休止時間中
+        /// </summary>
+        Halfway,
+        /// <summary>
+        /// トレード休止時間直後
+        /// </summary>
+        After,
+    }
+
     class BitFlyer
     {
         /// <summary>
@@ -226,6 +246,51 @@ namespace ConsoleApp1
                 Console.WriteLine($"Price:{ask.Price}, Size:{ask.Size}");
             }
             Console.ReadKey();
+        }
+
+        public static BreakTime IsBreakTime(DateTime dt) => IsBreakTime(dt.TimeOfDay);
+        public static BreakTime IsBreakTime(TimeSpan ts)
+        {
+            // 全体的に前後1分間は余裕を持たせておく）
+            var breakTimes = new TimeSpan[][]
+            {
+                // 4:00～4:10はメンテナンス時間
+                new [] { new TimeSpan( 3,59,00), new TimeSpan( 4,11,00) },
+                // 日付を跨ぐとき
+                new [] { new TimeSpan(23,59,00), new TimeSpan(0,1,00) },
+            };
+
+            foreach (var breakTime in breakTimes)
+            {
+                // トレード休止時間前（4分前からとする）
+                if (breakTime[0].Add(TimeSpan.FromMinutes(-4)) <= ts && ts < breakTime[0])
+                {
+                    return BreakTime.Before;
+                }
+                // トレード休止時間中
+                if (breakTime[0] <= breakTime[1])
+                {
+                    // 日付を跨がない場合
+                    if (breakTime[0] <= ts && ts < breakTime[1])
+                    {
+                        return BreakTime.Halfway;
+                    }
+                }
+                else
+                {
+                    // 日付を跨ぐ場合
+                    if (breakTime[0] <= ts || ts < breakTime[1])
+                    {
+                        return BreakTime.Halfway;
+                    }
+                }
+                // トレード休止時間後（4分後までとする）
+                if (breakTime[1] <= ts && ts < breakTime[1].Add(TimeSpan.FromMinutes(4)))
+                {
+                    return BreakTime.After;
+                }
+            }
+            return BreakTime.None;
         }
 
         struct PriceAndSize

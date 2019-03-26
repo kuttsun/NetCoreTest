@@ -21,12 +21,43 @@ namespace ConsoleApp1
             //Console.WriteLine($"{target}\n{hoge}");
 
             // 排他処理のテスト
-            var lockTest = new LockTest();
-            Parallel.For(0, 99, i =>
-            {
-                lockTest.Hoge(i);
-            });
-            Console.WriteLine("完了");
+            //var lockTest = new LockTest();
+            //Parallel.For(0, 99, i =>
+            //{
+            //    lockTest.Hoge(i);
+            //});
+
+            // expected: None
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 25, 23, 54, 59)));
+            // expected: Before
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 25, 23, 55, 0)));
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 25, 23, 58, 59)));
+            // expected: Halfway
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 25, 23, 59, 0)));
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 26, 0, 0, 0)));
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 26, 0, 0, 59)));
+            // expected: After
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 26, 0, 1, 0)));
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 26, 0, 4, 59)));
+            // expected: None
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 26, 0, 5, 0)));
+
+            Console.WriteLine("-----");
+
+            // expected: None
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 25, 3, 54, 59)));
+            // expected: Before
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 25, 3, 55, 0)));
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 25, 3, 58, 59)));
+            // expected: Halfway
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 25, 3, 59, 0)));
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 25, 4, 0, 0)));
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 25, 4, 10, 59)));
+            // expected: After
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 25, 4, 11, 0)));
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 25, 4, 14, 59)));
+            // expected: None
+            Console.WriteLine(BitFlyer.IsBreakTime(new DateTime(2019, 3, 25, 4, 15, 0)));
             Console.ReadKey();
         }
 
