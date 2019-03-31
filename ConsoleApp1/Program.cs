@@ -21,13 +21,16 @@ namespace ConsoleApp1
             //Console.WriteLine($"{target}\n{hoge}");
 
             // 排他処理のテスト
-            var lockTest = new LockTest();
-            Parallel.For(0, 99, i =>
-            {
-                lockTest.Hoge(i);
-            });
-            Console.WriteLine("完了");
-            Console.ReadKey();
+            //var lockTest = new LockTest();
+            //Parallel.For(0, 99, i =>
+            //{
+            //    lockTest.Hoge(i);
+            //});
+            //Console.WriteLine("完了");
+            //Console.ReadKey();
+
+            var discord = new Discord("Webhookurl");
+            discord.Send("test");
         }
 
 
