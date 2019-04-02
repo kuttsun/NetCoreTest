@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 
 using Microsoft.EntityFrameworkCore;
@@ -14,12 +15,27 @@ namespace EFCoreSqlite
         {
             optionsBuilder.UseSqlite("Data Source=sqlitetest.db");
         }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Person>()
+                .Property<string>("AttributeCollection")
+                .HasField("_attributes");
+        }
     }
 
     public class Person
     {
+        private readonly char delimiter = ';';
         public int Id { get; set; }
         public string Name { get; set; }
+        string _attributes;
+        [NotMapped]
+        public int[] Attributes
+        {
+            get => _attributes.Split(delimiter).Select(x => int.Parse(x)).ToArray();
+            set => _attributes = string.Join(delimiter, value);
+        }
     }
 
     class Model1Test
@@ -38,12 +54,12 @@ namespace EFCoreSqlite
 
             Console.WriteLine("----------");
 
-            Update(1, "Foo");
+            //Update(1, "Foo");
             Read();
 
             Console.WriteLine("----------");
 
-            Delete(1);
+            //Delete(1);
             Read();
         }
 
@@ -52,7 +68,12 @@ namespace EFCoreSqlite
         {
             using (var db = new PersonDbContext())
             {
-                var person = new Person { Name = name };
+                var person = new Person
+                {
+                    Name = name,
+                    //Attributes = new string[] { "0", "1", "2" }
+                    Attributes = new int[] { 0, 1, 2 }
+                };
                 db.Persons.Add(person);
                 db.SaveChanges();
             }
@@ -66,7 +87,7 @@ namespace EFCoreSqlite
                 Console.WriteLine("----------");
                 foreach (var person in db.Persons)
                 {
-                    Console.WriteLine($"ID = {person.Id}, Name = {person.Name}");
+                    Console.WriteLine($"ID = {person.Id}, Name = {person.Name}, Attributes={string.Join(", ", person.Attributes)}");
                 }
             }
         }
