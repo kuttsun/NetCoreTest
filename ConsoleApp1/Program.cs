@@ -29,11 +29,17 @@ namespace ConsoleApp1
             //Console.WriteLine("完了");
             //Console.ReadKey();
 
-            var discord = new Discord("Webhookurl");
-            discord.Send("test");
+            //var discord = new Discord("Webhookurl");
+            //discord.Send("test");
+
+            Person person = null;
+            //Console.WriteLine($"Name:{person?.Name}");
+
+
+            int age = (int)person?.Age;
+
+            Console.ReadKey();
         }
-
-
     }
 
     class LockTest
