@@ -39,22 +39,60 @@ namespace ConsoleApp1
             //int age = (int)person?.Age;
 
             // TimeSpan には上限を超えた値も入力可能（90秒とか）
-            var second = 60 * 60 * 24 * 7;
+            var second = 15;// 60 * 60 * 24 * 7;
             var ts = new TimeSpan(0, 0, second);
             Console.WriteLine(ts.TotalSeconds);
 
+            //var begin = new DateTime(2019, 12, 31, 12, 00, 00);
+            //var end = begin.AddYears(1);
+            //var current = begin;
+            //while (current < end)
+            //{
+            //    var diff = current - DateTime.MinValue;
+            //    if (diff.TotalSeconds % second == 0)
+            //    {
+            //        Console.WriteLine(current);
+            //    }
+            //    current = current.AddSeconds(1);
+            //}
+
             var begin = new DateTime(2019, 12, 31, 12, 00, 00);
-            var end = begin.AddYears(1);
+            var end = begin.AddMinutes(1);
+            // ターゲットの用意
+            var targets = new List<DateTime>();
             var current = begin;
             while (current < end)
             {
-                var diff = current - DateTime.MinValue;
-                if (diff.TotalSeconds % second == 0)
-                {
-                    Console.WriteLine(current);
-                }
+                targets.Add(current);
                 current = current.AddSeconds(1);
             }
+            // 確認
+            foreach (var target in targets) Console.WriteLine(target);
+            // 5秒ごとにまとめる
+            var terms = new List<DateTime>();
+            foreach (var target in targets)
+            {
+                var diff = target - DateTime.MinValue;
+                if (diff.TotalSeconds % second == 0)
+                {
+                    // まとめた結果を表示
+                    if (terms.Any())
+                    {
+                        Console.WriteLine("----------");
+                        foreach (var term in terms) Console.WriteLine(term);
+                    }
+                    // 新たな区間の開始
+                    terms.Clear();
+                }
+                terms.Add(target);
+            }
+            // 作成途中の区間がある
+            if(terms.Any())
+            {
+                Console.WriteLine("-----current-----");
+                foreach (var term in terms) Console.WriteLine(term);
+            }
+
 
             Console.ReadKey();
         }
