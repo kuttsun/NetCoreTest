@@ -32,11 +32,29 @@ namespace ConsoleApp1
             //var discord = new Discord("Webhookurl");
             //discord.Send("test");
 
-            Person person = null;
-            //Console.WriteLine($"Name:{person?.Name}");
+            //Person person = null;
+            ////Console.WriteLine($"Name:{person?.Name}");
 
 
-            int age = (int)person?.Age;
+            //int age = (int)person?.Age;
+
+            // TimeSpan には上限を超えた値も入力可能（90秒とか）
+            var second = 60 * 60 * 24 * 7;
+            var ts = new TimeSpan(0, 0, second);
+            Console.WriteLine(ts.TotalSeconds);
+
+            var begin = new DateTime(2019, 12, 31, 12, 00, 00);
+            var end = begin.AddYears(1);
+            var current = begin;
+            while (current < end)
+            {
+                var diff = current - DateTime.MinValue;
+                if (diff.TotalSeconds % second == 0)
+                {
+                    Console.WriteLine(current);
+                }
+                current = current.AddSeconds(1);
+            }
 
             Console.ReadKey();
         }
