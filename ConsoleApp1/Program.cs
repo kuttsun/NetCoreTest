@@ -65,21 +65,23 @@ namespace ConsoleApp1
         static void GroupBy()
         {
             // "Japan" と "America"が重複しているリスト
-            var countries = new List<string>() { "Japan", "Japan", "Japan", "America", "America", "China" };
+            var countries = new List<string>() { "Japan", /*"Japan", "Japan", "America",*/ "America", "China" };
 
             var groupedCountries = countries.GroupBy(x => x);
             //.Where(name => name.Count() > 1)
             //.Select(group => group.Key).ToList();
 
             // グループのキーを表示
-            Console.WriteLine(string.Join(", ", groupedCountries.Select(x => x.Key)));
+            //Console.WriteLine(string.Join(", ", groupedCountries.Select(x => x.Key)));
 
-            // 重複チェック
-            var keys = countries.GroupBy(x => x).Where(x => x.Count() > 1).Select(x => x.Key);
-            Console.WriteLine("重複しているデータ: " + string.Join(", ", keys));
+            //// 重複チェック
+            //Console.WriteLine(countries.IsDuplicated());
 
-            keys = countries.GroupBy(x => x).Where(x => x.Count() == 1).Select(x => x.Key);
-            Console.WriteLine("重複していないデータ: " + string.Join(", ", keys));
+            //var keys = countries.GroupBy(x => x).Where(x => x.Count() > 1).Select(x => x.Key);
+            //Console.WriteLine("重複しているデータ: " + string.Join(", ", keys));
+
+            //keys = countries.GroupBy(x => x).Where(x => x.Count() == 1).Select(x => x.Key);
+            //Console.WriteLine("重複していないデータ: " + string.Join(", ", keys));
             //// 各グループのキーと個数を表示
             //foreach (var groupedCountry in groupedCountries)
             //{
@@ -92,16 +94,19 @@ namespace ConsoleApp1
             //    }
             //}
 
-            //var persons = new List<Person>
-            //{
-            //    new Person(){ Name = "Hoge", Age = 20 },
-            //    new Person(){ Name = "Piyo", Age = 20 },
-            //    new Person(){ Name = "Foo",  Age = 30 },
-            //    new Person(){ Name = "Bar",  Age = 30 },
-            //};
+            var persons = new List<Person>
+            {
+                new Person(){ Name = "Hoge", Age = 20 },
+                new Person(){ Name = "Piyo", Age = 20 },
+                new Person(){ Name = "Foo",  Age = 30 },
+                new Person(){ Name = "Bar",  Age = 30 },
+            };
 
-            //// Age でグループ化
-            //var groupedPersons = persons.GroupBy(x => x.Age);
+            // Age でグループ化
+            var groupedPersons = persons.GroupBy(x => x.Age);
+
+            // 重複チェック
+            Console.WriteLine(persons.IsDuplicated(x => x.Name));
 
             //foreach (var groupedPerson in groupedPersons)
             //{
@@ -281,6 +286,18 @@ namespace ConsoleApp1
             {
                 if (acquiredLock) Monitor.Exit(lockObject);
             }
+        }
+    }
+
+    static class Extentions
+    {
+        public static bool IsDuplicated<T, U>(this IEnumerable<T> enumerable, Func<T, U> keySelector)
+        {
+            return enumerable.GroupBy(keySelector).Any(x => x.Count() > 1);
+        }
+        public static bool IsDuplicated<T>(this IEnumerable<T> enumerable)
+        {
+            return enumerable.GroupBy(x => x).Any(x => x.Count() > 1);
         }
     }
 }
