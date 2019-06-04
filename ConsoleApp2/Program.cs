@@ -1,30 +1,46 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace ConsoleApp2
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main()
         {
-            // ConsoleApp2 は ConsoleApp1 から参照されているが、
-            // ConsoleApp2 単独でも実行可能
-
-            Console.WriteLine("ConsoleApp2 Hello World!");
-
-            Test.Output();
-
+            var json = @"{ ""status"":0,""data"":{ ""status"":""OPEN""},""responsetime"":""2019-06-04T23:14:03Z""}";
+            var status = Deserialize<StatusData>(json);
+            Console.WriteLine(status);
             Console.ReadKey();
         }
 
-        
+        static T Deserialize<T>(string json)
+        {
+            var responseData = JsonConvert.DeserializeObject<ResponseData<T>>(json);
+            return responseData.Data;
+        }
     }
 
-    public class Test
+    public enum Status
     {
-        // このメソッドは ConsoleApp1 からコールされている
-        public static void Output()
-        {
-            Console.WriteLine("ConsoleApp2");
-        }
+        Maintenance,
+        Preopen,
+        Open,
+    }
+
+    public class ResponseData<T>
+    {
+        public string Status { get; set; }
+        public T Data { get; set; }
+        public string ResponseTime { get; set; }
+    }
+
+    public class StatusData
+    {
+        public Status Status { get; set; }
     }
 }
