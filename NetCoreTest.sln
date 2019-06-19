@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DependencyInjection2", "Dep
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EFCoreSqlServer", "EFCoreSqlServer\EFCoreSqlServer.csproj", "{302ADD60-FBF1-4DDF-917A-C121AA8D53C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HostedServiceTest", "HostedServiceTest\HostedServiceTest.csproj", "{1F8F7E5F-28F2-4B5D-92B7-E56A35DFE816}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HostedServiceTest", "HostedServiceTest\HostedServiceTest.csproj", "{1F8F7E5F-28F2-4B5D-92B7-E56A35DFE816}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfluxDB", "InfluxDB\InfluxDB.csproj", "{41E6A766-4DF9-4044-8F1D-5BB6495F1A99}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,6 +95,10 @@ Global
 		{1F8F7E5F-28F2-4B5D-92B7-E56A35DFE816}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1F8F7E5F-28F2-4B5D-92B7-E56A35DFE816}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1F8F7E5F-28F2-4B5D-92B7-E56A35DFE816}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41E6A766-4DF9-4044-8F1D-5BB6495F1A99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41E6A766-4DF9-4044-8F1D-5BB6495F1A99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41E6A766-4DF9-4044-8F1D-5BB6495F1A99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41E6A766-4DF9-4044-8F1D-5BB6495F1A99}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
