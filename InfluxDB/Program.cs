@@ -11,6 +11,7 @@ namespace InfluxDB
     {
         static async Task Main(string[] args)
         {
+            var randam = new Random();
             var dbName = "TestDb";
 
             var influxDbClient = new InfluxDbClient("http://localhost:8086/", "root", "root", InfluxDbVersion.Latest);
@@ -19,9 +20,10 @@ namespace InfluxDB
             var response = await influxDbClient.Database.CreateDatabaseAsync(dbName);
 
             // データの書き込み
-            var pointToWrite = new Point()
+            var point = new Point()
             {
-                Name = "reading", // serie/measurement/table to write into
+                // 所属する Measurement の名前
+                Name = "reading",
                 Tags = new Dictionary<string, object>()
                 {
                     { "SensorId", 8 },
@@ -29,15 +31,19 @@ namespace InfluxDB
                 },
                 Fields = new Dictionary<string, object>()
                 {
-                    { "SensorState", "act" },
-                    { "Humidity", 431 },
-                    { "Temperature", 22.1 },
-                    { "Resistance", 34957 }
+                    { "Open", randam.Next(200, 300) },
+                    { "High", randam.Next(300, 400) },
+                    { "Low", randam.Next(100, 200) },
+                    { "Close", randam.Next(200, 300) }
                 },
-                Timestamp = DateTime.UtcNow // optional (can be set to any DateTime moment)
+                // タイムスタンプを指定しなかった場合はサーバー側のタイムスタンプで記録される
+                //Timestamp = DateTime.UtcNow
             };
 
-            var res1 = await influxDbClient.Client.WriteAsync(pointToWrite, dbName);
+
+
+            await WritePoint("BitFlyer");
+            await WritePoint("BitMex");
 
 
             // データの読み込み
@@ -51,6 +57,39 @@ namespace InfluxDB
 
 
             Console.WriteLine("Hello World!");
+
+
+            Point CreatePoint(string name, int index)
+            {
+                return new Point()
+                {
+                    // 所属する Measurement の名前
+                    Name = name,
+                    Tags = new Dictionary<string, object>()
+                        {
+                            { "SensorId", 8 },
+                            { "SerialNumber", "00AF123B" }
+                        },
+                    Fields = new Dictionary<string, object>()
+                        {
+                            { "Open", randam.Next(200, 300) },
+                            { "High", randam.Next(300, 400) },
+                            { "Low", randam.Next(100, 200) },
+                            { "Close", randam.Next(200, 300) }
+                        },
+                    // タイムスタンプを指定しなかった場合はサーバー側のタイムスタンプで記録される
+                    Timestamp = DateTime.UtcNow.AddSeconds(index),
+                };
+            }
+
+            async Task WritePoint(string name)
+            {
+                // とりあえず適当な数書き込む
+                for (int i = 0; i < 10; i++)
+                {
+                    await influxDbClient.Client.WriteAsync(CreatePoint(name, i), dbName);
+                }
+            }
         }
     }
 }
