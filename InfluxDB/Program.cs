@@ -4,6 +4,7 @@ using InfluxData.Net.InfluxDb;
 using System.Threading.Tasks;
 using InfluxData.Net.InfluxDb.Models;
 using System.Collections.Generic;
+using InfluxData.Net.Common.Infrastructure;
 
 namespace InfluxDB
 {
@@ -15,9 +16,12 @@ namespace InfluxDB
 
             var influxDbClient = new InfluxDbClient("http://localhost:8086/", "root", "root", InfluxDbVersion.Latest);
 
+            IInfluxDataApiResponse response;
+
             // データベースの新規作成
             var dbName = "TestDb";
-            var response = await influxDbClient.Database.CreateDatabaseAsync(dbName);
+            response = await influxDbClient.Database.CreateDatabaseAsync(dbName);
+            response = await influxDbClient.Retention.CreateRetentionPolicyAsync(dbName, "retentionPolicyName", "1h", 3);
 
             // とりあえず適当なデータを１日分書き込む
             var dataTimeBase = DateTime.Today.AddDays(-1);// データの書き込み開始日時（昨日からにする）
@@ -55,7 +59,7 @@ namespace InfluxDB
             Console.ReadLine();
 
 
-            // CPU のセンサー情報を作成
+            // CPU の情報を作成
             Point CreateCpuPoint(int id, int index)
             {
                 return new Point()
